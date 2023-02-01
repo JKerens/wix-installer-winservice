@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+	 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+	<!--preprocessor variable to match the version of the referenced project-->
+	<?define UpgradeCode="2347e61f-8850-4af6-9a30-b9bd96f61234"?>
+	<?define ProductVersion="!(bind.fileVersion.WindowsService.App.exe)" ?>
+	
+	<Product Id="*" 
+			 Name="$(var.WindowsService.App.ProjectName)"
+			 Language="1033" 
+			 Version="$(var.ProductVersion)"
+			 Manufacturer="James Kerens Examples, Inc."
+			 UpgradeCode="$(var.UpgradeCode)">
+		
+		<Package Description="Installs the server service solution for JokeService" 
+				 InstallerVersion="200" 
+				 Compressed="yes" 
+				 InstallScope="perMachine" 
+				 Comments="Version: $(var.ProductVersion)"/>
+
+		<!--afterInstallFinalize is needed to avoid file locking along with fileversion folder based deployments-->
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed."
+					  Schedule="afterInstallFinalize"/>
+		
+		<MediaTemplate EmbedCab="yes"/>
+
+		<!--Reboot settings from global-->
+		<PropertyRef Id="REBOOT"/>
+
+		<Feature Id="ProductFeature" Title="Joke Service" Level="1">
+			<ComponentGroupRef Id="Initialize" />
+			<ComponentRef Id="Components"/>
+			<ComponentGroupRef Id="Configuration"/>
+			<ComponentRef Id="Finalize"/>
+		</Feature>
+	</Product>
+</Wix>

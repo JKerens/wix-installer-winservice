@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
+	 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	
+	<Fragment>
+		<!--All properties needed should be referenced via WindowsService.Installer.Shared.wixproj-->
+		<PropertyRef Id="SERVICE_NAME" />
+		<!-- Sets the directory everything goes into-->
+		<DirectoryRef Id="APPLICATIONFOLDER">
+			<Component Id="Components" Guid="6c3cb65a-e004-4f5a-ad93-f24cd4b34f48">
+
+				<File Id="appsettings.json"
+					  Source="$(var.WindowsService.App.TargetDir)publish\appsettings.json"
+					  Checksum="yes" />
+				
+				<File Id="Settings.xml"
+					  Source="$(var.WindowsService.App.TargetDir)publish\Settings.xml"
+					  Checksum="yes" />
+				
+				<File Id="WindowsService.App.exe" 
+					  KeyPath="yes" 
+					  Source="$(var.WindowsService.App.TargetDir)publish\WindowsService.App.exe" 
+					  Checksum="yes" />
+				
+				<ServiceInstall Id="WindowsService" 
+								Type="ownProcess" 
+								Vital="yes" 
+								Name="[SERVICE_NAME]" 
+								DisplayName="Joke Service" 
+								Description="The main service that acts as a hub for all jokes" 
+								Start="auto" 
+								Interactive="no" 
+								ErrorControl="normal">
+					
+					<util:ServiceConfig ResetPeriodInDays="0" 
+										RestartServiceDelayInSeconds="300" 
+										FirstFailureActionType="restart"
+										SecondFailureActionType="restart" 
+										ThirdFailureActionType="restart" />
+					
+					<ServiceConfig DelayedAutoStart="yes" 
+								   OnInstall="yes" 
+								   OnReinstall="yes" />
+				</ServiceInstall>				
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+	 xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Fragment>
+		<!--All properties needed should be referenced via Wix.Model.wixproj-->
+		<PropertyRef Id="SERVICE_NAME"/>
+
+		<Component Id="Finalize"
+				   Guid="8d6f04df-9e5d-46bf-9523-1b6c5a850971"
+				   Directory="APPLICATIONFOLDER"
+				   KeyPath="yes">
+
+			<ServiceControl Id="StartService"
+							Stop="both"
+							Remove="uninstall"
+							Name='[SERVICE_NAME]'
+							Wait="yes"
+							Start="install" />
+		</Component>
+	</Fragment>
+</Wix>

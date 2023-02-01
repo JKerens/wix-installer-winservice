@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	
+	<Fragment>
+		<!--All properties needed should be referenced via Wix.Model.wixproj-->
+		<!--All RegistryValue entries should have Key='[REGISTRY_SAVE_PATH]' 
+			so they save to the same folder-->
+		<PropertyRef Id="REGISTRY_SAVE_PATH"/>
+
+		<!--Service Account info-->
+		<PropertyRef Id="SERVICE_ACCOUNT_NAME"/>
+
+		<!--These should all have matching RegistryValue setters below-->
+		<PropertyRef Id="COMPANY_ID"/>
+
+		<Binary Id="CustomActionDll" SourceFile="$(var.WindowsService.Installer.CustomActions.TargetDir)WindowsService.Installer.CustomActions.CA.dll" />
+		<InstallExecuteSequence>
+			<Custom Action="InitializeServerCA" Before="InstallInitialize"/>
+		</InstallExecuteSequence>
+
+		<CustomAction Id="InitializeServerCA"
+					  Return="check"
+					  Execute="immediate"
+					  BinaryKey="CustomActionDll"
+					  DllEntry="InitializeServer"
+					  HideTarget="no"/>
+
+		<!--Used to set values that are dynamic and require custom actions etc-->
+		<ComponentGroup Id="Initialize">
+
+			<Component Id="SetRememberedValues"
+					   Guid="1b922679-9700-468a-84a5-fd8a0616bea8"
+					   KeyPath="yes"
+					   Directory="APPLICATIONFOLDER">
+
+				<RegistryValue Root='HKLM'
+							   Key='[REGISTRY_SAVE_PATH]'
+							   Name='COMPANY_ID'
+							   Value='[COMPANY_ID]'
+							   Type='string'/>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

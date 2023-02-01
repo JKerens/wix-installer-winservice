@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<!--Static settings, should not be overriden-->
+		<?define RegistrySavePath="SOFTWARE\MYAPPCOMPANY\MYAPP" ?>
+	
+		<!--ref http://unattended.sourceforge.net/installers.php 
+			or https://docs.microsoft.com/en-us/windows/win32/msi/reboot-->
+		<Property Id="REBOOT" Hidden="no" Secure="yes" Value="ReallySuppress" />
+	
+		<!--Static settings, should not be overriden-->
+		<Property Id="REGISTRY_SAVE_PATH" Hidden="no" Secure="yes" Value="$(var.RegistrySavePath)" />
+	
+		<!--Set registry values that need to survive between updates here
+			Keep in mind they are not encrypted so no secrets please-->
+		<Property Id="COMPANY_ID" Hidden="no" Secure="yes">
+		<RegistrySearch Id="COMPANY_ID_SEARCH"
+						Key='[REGISTRY_SAVE_PATH]'
+						Name="COMPANY_ID"
+						Root="HKLM"
+						Type="raw"/>
+		</Property>
+	
+		<!-- Shared directory structure -->
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="DesktopFolder" Name="Desktop"/>
+			<Directory Id="ProgramMenuFolder"/>
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="MYAPPFOLDER" Name="MYAPPCOMPANY" >
+				</Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+</Wix>

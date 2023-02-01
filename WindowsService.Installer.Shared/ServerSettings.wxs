@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<!--Static settings, should not be overriden-->
+		<?define ServerServiceAccountName="NT AUTHORITY\SYSTEM" ?>
+		<?define ServerServiceName=".NET Joke Service" ?>
+
+		<!--Static settings, should not be overriden-->
+		<Property Id="SERVICE_ACCOUNT_NAME" Hidden="no" Secure="yes" Value="$(var.ServerServiceAccountName)" />
+		<Property Id="SERVICE_NAME" Hidden="no" Secure="yes" Value="$(var.ServerServiceName)" />
+	</Fragment>
+</Wix>

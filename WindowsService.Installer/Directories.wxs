@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<!--Dynamic folder name generation based on file version binding
+	      ex: C:\software\2.0.0\mypackage.exe-->
+		<?define ProductVersion="!(bind.fileVersion.WindowsService.App.exe)" ?>
+		
+		<!-- Nested from global settings Directory node-->
+		<DirectoryRef Id="MYAPPFOLDER">
+			<Directory Id="SOFTWARE_PACKAGE" Name="MYAPP">
+				<Directory Id="APPLICATIONFOLDER" Name="$(var.ProductVersion)"/>
+			</Directory>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

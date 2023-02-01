@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	
+	<Fragment>
+		<!--All properties needed should be referenced via Wix.Model.wixproj-->
+		<!--Appsetting Properties-->
+		<PropertyRef Id="COMPANY_ID" />
+
+		<ComponentGroup Id="Configuration" Directory="APPLICATIONFOLDER">
+			<!--Fills out appconfig appsettings-->
+			<Component Id="AppConfigSettings"
+					   Guid="a911c742-9305-4151-87e5-ba09c21aed5d"
+					   KeyPath="yes">
+
+				<util:XmlFile Id="SetServerCompanyId"
+						   Action="setValue"
+						   Permanent="yes"
+						   File="[#Settings.xml]"
+						   ElementPath="/configuration/appSettings/add[\[]@key='CompanyId'[\]]"
+						   Name="value"
+						   Value='[COMPANY_ID]'
+						   SelectionLanguage="XPath"
+						   Sequence="1" />
+				
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
